@@ -1,0 +1,34 @@
+name: sync
+
+on:
+  push:
+    branches:
+      - master
+  issues:
+    types: [ opened , edited ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository master branch
+      uses: actions/checkout@master
+
+    - name: Setup Node.js
+      uses: actions/setup-node@master
+      with:
+        node-version: "10.15.3"
+
+    - name: Setup Dependencies
+      run: |
+        npm install cross-env -g
+        npm install
+
+    - name: Sync Weibo
+      env:
+        GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        ISSUE_TOKEN: ${{ secrets.ISSUE_TOKEN }}
+      run: |
+        cross-env GIST_TOKEN=$GIST_TOKEN BOT_TOKEN=$BOT_TOKEN ISSUE_TOKEN=$ISSUE_TOKEN node sync.js
