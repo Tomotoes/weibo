@@ -38,14 +38,8 @@ module.exports = () => {
   return Weibo.post('/graphql',
     getIssues({ owner, repo })
   ).then(res => {
-    if (res.data) {
-      console.log('获取 issue 成功!')
-    }
     const issue = res.data.data.repository.issues.nodes[0].body
     return filterIssue(issue)
-  }).catch(err => {
-    console.error('获取 issue 失败!')
-    console.error(err)
   })
 }
 

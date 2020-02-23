@@ -14,29 +14,17 @@ const config = {
 
 const imageRegex = /(?:!\[(.*?)\]\((.*?)\))/g
 
-module.exports = body => {
-  return slimbot.sendMessage(chatID, body, config)
+module.exports = issue => {
+  return slimbot.sendMessage(chatID, issue, config)
     .then(() => {
-      console.log('telegram 频道同步成功!')
-      const images = body.match(imageRegex)
+      const images = issue.match(imageRegex)
       if (!images || !images.length) {
-        console.log('未检测到图片!')
         return
       }
       images.map(image => image.slice(image.indexOf('(') + 1, -1))
         .filter(isImageUrl)
         .forEach(url => {
           slimbot.sendPhoto(chatID, url)
-            .then(() => {
-              console.log(url + '图片发送成功!')
-            }).catch(err => {
-              console.error(url + '图片发送失败!')
-              console.error(err)
-            })
-
         })
-    }).catch(err => {
-      console.error('telegram 频道同步失败!')
-      console.error(err)
     })
 }

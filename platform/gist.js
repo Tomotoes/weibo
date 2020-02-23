@@ -1,14 +1,21 @@
-const { GistBox } = require('gist-box')
+const axios = require('axios')
 
-const gistID = '2387925d8c60bb011d92cc82ebcdc357'
 const { GIST_TOKEN } = process.env
 
-const box = new GistBox({ gistID, GIST_TOKEN })
+const gistID = '2387925d8c60bb011d92cc82ebcdc357'
+
+const Gist = axios.create({
+  baseURL: 'https://api.github.com/gists/',
+  headers: { Authorization: 'token ' + GIST_TOKEN }
+})
 
 module.exports = issue => {
-  return box.update({
-    filename: 'Weibo.sync',
+  Gist.patch(gistID, {
     description: '✨ Latest Weibo',
-    content: issue
+    files: {
+      'Weibo.md': {
+        content: issue
+      }
+    }
   })
 }

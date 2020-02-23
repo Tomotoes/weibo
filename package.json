@@ -12,7 +12,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cross-env": "^7.0.0",
-    "gist-box": "^0.3.0",
     "is-image-url": "^1.1.8",
     "slimbot": "^4.6.0"
   }
